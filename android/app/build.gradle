@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.admin_panel"
+    namespace "com.example.ecomm_admin"
     compileSdk 35
     ndkVersion flutter.ndkVersion
 
@@ -42,7 +42,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.admin_panel"
+        applicationId "com.example.ecomm_admin"
         minSdk 23
         targetSdk 35
         versionCode flutterVersionCode.toInteger()
