@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "380244150098",
+    "project_id": "ecomm-285ef",
+    "storage_bucket": "ecomm-285ef.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380244150098:android:1354f976c23ac80d345c8b",
+        "android_client_info": {
+          "package_name": "com.example.e_comm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "380244150098-ql5s53ldfee0ntks41qpsv3pk1vnmmh2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.e_comm",
+            "certificate_hash": "a1cdf91044bc198518ee97474cf501e3f67862b0"
+          }
+        },
+        {
+          "client_id": "380244150098-nd1tdb9v099ggmeeguuct1baep9ba3a7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCriBUmQqQE0JaEFGcmCL5U1K34yVnPCcI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "380244150098-nd1tdb9v099ggmeeguuct1baep9ba3a7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
