@@ -1,0 +1,21 @@
+# Flutter
+.dart_tool/
+.packages
+.pub/
+build/
+
+# Android
+.gradle/
+local.properties
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+
+# VSCode
+.vscode/
+
+# IntelliJ
+.idea/
+
+# macOS
+.DS_Store

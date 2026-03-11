@@ -1,22 +1,7 @@
-import 'package:admin_panel/screens/splash-screen.dart';
-import 'package:admin_panel/utils/constant.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/get.dart';
 
-import 'firebase_options.dart';
-
-@pragma('vm:entry-point')
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-}
-
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 
@@ -25,15 +10,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: AppConstant.appMainName,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+      home: Scaffold(
+        body: Center(
+          child: Text(
+            'EasyShopping Admin Panel',
+            style: TextStyle(fontSize: 24),
+          ),
+        ),
       ),
-      home: const SplashScreen(),
-      builder: EasyLoading.init(),
     );
   }
 }

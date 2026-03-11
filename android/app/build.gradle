@@ -25,12 +25,13 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.ecomm_admin"
-    compileSdk 35
+    compileSdk 36
     ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
@@ -43,8 +44,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.ecomm_admin"
-        minSdk 23
-        targetSdk 35
+        minSdkVersion flutter.minSdkVersion
+        targetSdk 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
@@ -61,4 +62,6 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.2'
+}
