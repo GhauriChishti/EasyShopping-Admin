@@ -63,14 +63,30 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
     try {
       final file = File(_selectedImage!.path);
-      final fileName =
-          'products/${DateTime.now().millisecondsSinceEpoch}_${_selectedImage!.name}';
+      final productRef = FirebaseFirestore.instance.collection('products').doc();
+      final productId = productRef.id;
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
 
-      final storageRef = FirebaseStorage.instance.ref().child(fileName);
-      await storageRef.putFile(file);
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('product_images')
+          .child(productId)
+          .child('$timestamp.jpg');
+
+      final uploadTask = storageRef.putFile(file);
+      final snapshot = await uploadTask;
+
+      if (snapshot.state != TaskState.success) {
+        throw FirebaseException(
+          plugin: 'firebase_storage',
+          message: 'Image upload did not complete successfully.',
+        );
+      }
+
       final imageUrl = await storageRef.getDownloadURL();
 
-      await FirebaseFirestore.instance.collection('products').add({
+      await productRef.set({
+        'productId': productId,
         'name': _nameController.text.trim(),
         'price': double.parse(_priceController.text.trim()),
         'description': _descriptionController.text.trim(),
@@ -92,10 +108,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
         _selectedCategory = _categories.first;
         _selectedImage = null;
       });
+    } on FirebaseException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Upload failed (${e.code}): ${e.message ?? 'Please try again.'}',
+          ),
+        ),
+      );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Upload failed: $e')),
+        SnackBar(content: Text('Unexpected error: $e')),
       );
     } finally {
       if (mounted) {
