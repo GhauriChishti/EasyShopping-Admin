@@ -29,6 +29,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
   XFile? _selectedImage;
   bool _isUploading = false;
 
+  void _showSnackBar(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -51,9 +58,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       return;
     }
     if (_selectedImage == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a product image.')),
-      );
+      _showSnackBar('Please select a product image.');
       return;
     }
 
@@ -73,8 +78,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
           .child(productId)
           .child('$timestamp.jpg');
 
-      final uploadTask = storageRef.putFile(file);
-      final snapshot = await uploadTask;
+      final UploadTask uploadTask = storageRef.putFile(file);
+      final TaskSnapshot snapshot = await uploadTask;
 
       if (snapshot.state != TaskState.success) {
         throw FirebaseException(
@@ -83,7 +88,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         );
       }
 
-      final imageUrl = await storageRef.getDownloadURL();
+      final imageUrl = await snapshot.ref.getDownloadURL();
 
       await productRef.set({
         'productId': productId,
@@ -95,10 +100,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         'createdAt': FieldValue.serverTimestamp(),
       });
 
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Product uploaded successfully.')),
-      );
+      _showSnackBar('Product uploaded successfully.');
 
       _formKey.currentState!.reset();
       _nameController.clear();
@@ -109,19 +111,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
         _selectedImage = null;
       });
     } on FirebaseException catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Upload failed (${e.code}): ${e.message ?? 'Please try again.'}',
-          ),
-        ),
+      _showSnackBar(
+        'Upload failed (${e.code}): ${e.message ?? 'Please try again.'}',
       );
     } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Unexpected error: $e')),
-      );
+      _showSnackBar('Unexpected error: $e');
     } finally {
       if (mounted) {
         setState(() {
