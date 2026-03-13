@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'add_product_screen.dart';
 import 'product_list_screen.dart';
+import 'orders_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -43,6 +44,20 @@ class DashboardScreen extends StatelessWidget {
                     );
                   },
                   child: const Text('View Products'),
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const OrdersScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text('View Orders'),
                 ),
               ),
             ],
