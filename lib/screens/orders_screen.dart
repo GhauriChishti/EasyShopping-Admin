@@ -4,6 +4,23 @@ import 'package:flutter/material.dart';
 class OrdersScreen extends StatelessWidget {
   const OrdersScreen({super.key});
 
+  Future<void> _updateOrderStatus({
+    required BuildContext context,
+    required String orderId,
+    required String newStatus,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection('orders')
+        .doc(orderId)
+        .update({'status': newStatus});
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Order status updated'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +86,53 @@ class OrdersScreen extends StatelessWidget {
                       Text('Status: $status'),
                       Text('Created At: $createdAt'),
                       Text('Item Count: $itemCount'),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          ElevatedButton(
+                            onPressed: status == 'confirmed'
+                                ? null
+                                : () => _updateOrderStatus(
+                                      context: context,
+                                      orderId: orderDoc.id,
+                                      newStatus: 'confirmed',
+                                    ),
+                            child: const Text('Confirm Order'),
+                          ),
+                          ElevatedButton(
+                            onPressed: status == 'shipped'
+                                ? null
+                                : () => _updateOrderStatus(
+                                      context: context,
+                                      orderId: orderDoc.id,
+                                      newStatus: 'shipped',
+                                    ),
+                            child: const Text('Mark Shipped'),
+                          ),
+                          ElevatedButton(
+                            onPressed: status == 'delivered'
+                                ? null
+                                : () => _updateOrderStatus(
+                                      context: context,
+                                      orderId: orderDoc.id,
+                                      newStatus: 'delivered',
+                                    ),
+                            child: const Text('Mark Delivered'),
+                          ),
+                          ElevatedButton(
+                            onPressed: status == 'cancelled'
+                                ? null
+                                : () => _updateOrderStatus(
+                                      context: context,
+                                      orderId: orderDoc.id,
+                                      newStatus: 'cancelled',
+                                    ),
+                            child: const Text('Cancel Order'),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
