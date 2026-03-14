@@ -47,15 +47,24 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
         );
       }
     } on FirebaseAuthException catch (e) {
+      debugPrint(
+        'FirebaseAuthException during admin Google sign-in: ${e.code} | ${e.message}',
+      );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.message ?? 'Authentication failed.')),
+          SnackBar(
+            content: Text(
+              'FirebaseAuthException: ${e.code} | ${e.message}',
+            ),
+          ),
         );
       }
-    } catch (_) {
+    } catch (e, st) {
+      debugPrint('Admin Google sign-in error: $e');
+      debugPrintStack(stackTrace: st);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Unable to sign in right now.')),
+          SnackBar(content: Text('Sign-in error: $e')),
         );
       }
     } finally {

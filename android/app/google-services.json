@@ -51,6 +51,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "380244150098-323uomk1687g9bmit9oi4setjj2a9a6l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ecomm_admin",
+            "certificate_hash": "a1cdf91044bc198518ee97474cf501e3f67862b0"
+          }
+        },
+        {
           "client_id": "380244150098-nd1tdb9v099ggmeeguuct1baep9ba3a7.apps.googleusercontent.com",
           "client_type": 3
         }
