@@ -7,12 +7,16 @@ class ProductCard extends StatelessWidget {
     required this.price,
     required this.category,
     required this.imageUrl,
+    required this.onEdit,
+    required this.onDelete,
   });
 
   final String name;
   final String price;
   final String category;
   final String imageUrl;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +34,41 @@ class ProductCard extends StatelessWidget {
         ),
         title: Text(name),
         subtitle: Text('Category: $category'),
-        trailing: Text('\$$price'),
+        trailing: PopupMenuButton<String>(
+          onSelected: (value) {
+            if (value == 'edit') {
+              onEdit();
+            } else if (value == 'delete') {
+              onDelete();
+            }
+          },
+          itemBuilder: (context) => const [
+            PopupMenuItem<String>(
+              value: 'edit',
+              child: ListTile(
+                leading: Icon(Icons.edit),
+                title: Text('Edit Product'),
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+            PopupMenuItem<String>(
+              value: 'delete',
+              child: ListTile(
+                leading: Icon(Icons.delete, color: Colors.red),
+                title: Text('Delete Product'),
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+          ],
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('\$$price'),
+              const SizedBox(width: 8),
+              const Icon(Icons.more_vert),
+            ],
+          ),
+        ),
       ),
     );
   }
