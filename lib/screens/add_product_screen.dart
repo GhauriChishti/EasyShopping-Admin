@@ -5,6 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../constants/product_categories.dart';
+
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
 
@@ -18,14 +20,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
 
-  final List<String> _categories = [
-    'Electronics',
-    'Fashion',
-    'Home',
-    'Grocery',
-  ];
-
-  String _selectedCategory = 'Electronics';
+  String _selectedCategory = kProductCategories.first;
   XFile? _selectedImage;
   bool _isUploading = false;
 
@@ -107,7 +102,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       _priceController.clear();
       _descriptionController.clear();
       setState(() {
-        _selectedCategory = _categories.first;
+        _selectedCategory = kProductCategories.first;
         _selectedImage = null;
       });
     } on FirebaseException catch (e) {
@@ -178,7 +173,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               DropdownButtonFormField<String>(
                 value: _selectedCategory,
                 decoration: const InputDecoration(labelText: 'Category'),
-                items: _categories
+                items: kProductCategories
                     .map(
                       (category) => DropdownMenuItem<String>(
                         value: category,

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/product_categories.dart';
+
 class EditProductScreen extends StatefulWidget {
   const EditProductScreen({
     super.key,
@@ -26,7 +28,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   late final TextEditingController _nameController;
   late final TextEditingController _priceController;
   late final TextEditingController _descriptionController;
-  late final TextEditingController _categoryController;
+  late String _selectedCategory;
 
   bool _isSaving = false;
 
@@ -43,7 +45,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _nameController = TextEditingController(text: widget.initialName);
     _priceController = TextEditingController(text: widget.initialPrice);
     _descriptionController = TextEditingController(text: widget.initialDescription);
-    _categoryController = TextEditingController(text: widget.initialCategory);
+    _selectedCategory = kProductCategories.contains(widget.initialCategory)
+        ? widget.initialCategory
+        : kProductCategories.first;
   }
 
   @override
@@ -51,7 +55,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _nameController.dispose();
     _priceController.dispose();
     _descriptionController.dispose();
-    _categoryController.dispose();
     super.dispose();
   }
 
@@ -72,7 +75,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         'name': _nameController.text.trim(),
         'price': double.parse(_priceController.text.trim()),
         'description': _descriptionController.text.trim(),
-        'category': _categoryController.text.trim(),
+        'category': _selectedCategory,
       });
 
       _showSnackBar('Product updated successfully.');
@@ -145,14 +148,23 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 },
               ),
               const SizedBox(height: 12),
-              TextFormField(
-                controller: _categoryController,
+              DropdownButtonFormField<String>(
+                value: _selectedCategory,
                 decoration: const InputDecoration(labelText: 'Category'),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Category is required.';
+                items: kProductCategories
+                    .map(
+                      (category) => DropdownMenuItem<String>(
+                        value: category,
+                        child: Text(category),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedCategory = value;
+                    });
                   }
-                  return null;
                 },
               ),
               const SizedBox(height: 20),
